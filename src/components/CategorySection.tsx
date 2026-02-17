@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Pill, Heart, Baby, Eye, Droplets, Activity, Stethoscope, Apple } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const categories = [
   { icon: Pill, name: "Medicines", color: "bg-primary/10 text-primary" },
@@ -30,22 +31,24 @@ const CategorySection = () => {
           {categories.map((cat, i) => (
             <motion.div
               key={cat.name}
-              className="group cursor-pointer"
+              className="group"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
               whileHover={{ y: -5, rotateY: 5 }}
             >
-              <div className="flex flex-col items-center gap-3 p-4 rounded-2xl bg-background border border-border/50 transition-all duration-300 group-hover:shadow-card-hover group-hover:border-primary/20">
-                <motion.div
-                  className={`w-14 h-14 rounded-2xl flex items-center justify-center ${cat.color} transition-all duration-300`}
-                  whileHover={{ scale: 1.1 }}
-                >
-                  <cat.icon className="w-6 h-6" />
-                </motion.div>
-                <span className="text-xs font-semibold text-foreground text-center">{cat.name}</span>
-              </div>
+              <Link to={`/category/${encodeURIComponent(cat.name)}`}>
+                <div className="flex flex-col items-center gap-3 p-4 rounded-2xl bg-background border border-border/50 transition-all duration-300 group-hover:shadow-card-hover group-hover:border-primary/20 cursor-pointer">
+                  <motion.div
+                    className={`w-14 h-14 rounded-2xl flex items-center justify-center ${cat.color} transition-all duration-300`}
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    <cat.icon className="w-6 h-6" />
+                  </motion.div>
+                  <span className="text-xs font-semibold text-foreground text-center">{cat.name}</span>
+                </div>
+              </Link>
             </motion.div>
           ))}
         </div>
