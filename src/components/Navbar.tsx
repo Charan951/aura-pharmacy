@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, ShoppingCart, User, Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 interface NavbarProps {
   cartCount: number;
@@ -19,7 +20,13 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navLinks = ["Home", "Categories", "Offers", "Health Blog", "About"];
+  const navLinks = [
+    { label: "Home", to: "/" },
+    { label: "Categories", to: "/#categories" },
+    { label: "Offers", to: "/offers" },
+    { label: "Health Blog", to: "/health-blog" },
+    { label: "About", to: "/about" },
+  ];
 
   return (
     <motion.header
@@ -127,15 +134,14 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
         {/* Desktop Nav Links */}
         <nav className="hidden md:flex items-center gap-6 mt-2 pb-1">
           {navLinks.map((link) => (
-            <motion.a
-              key={link}
-              href="#"
+            <Link
+              key={link.label}
+              to={link.to}
               className="relative text-sm font-medium text-muted-foreground hover:text-foreground transition-colors pb-1 group"
-              whileHover={{ y: -1 }}
             >
-              {link}
+              {link.label}
               <span className="absolute bottom-0 left-0 w-0 h-0.5 rounded-full gradient-primary transition-all duration-300 group-hover:w-full" />
-            </motion.a>
+            </Link>
           ))}
         </nav>
       </div>
@@ -159,16 +165,20 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
                 />
               </div>
               {navLinks.map((link, i) => (
-                <motion.a
-                  key={link}
-                  href="#"
-                  className="block py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
+                <motion.div
+                  key={link.label}
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: i * 0.05 }}
                 >
-                  {link}
-                </motion.a>
+                  <Link
+                    to={link.to}
+                    className="block py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                </motion.div>
               ))}
             </div>
           </motion.div>
