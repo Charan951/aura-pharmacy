@@ -2,30 +2,9 @@ import { motion } from "framer-motion";
 import { ShoppingCart, Star, BadgePercent } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { allProducts, type Product } from "@/data/products";
 
-interface Product {
-  id: number;
-  name: string;
-  brand: string;
-  price: number;
-  originalPrice: number;
-  rating: number;
-  reviews: number;
-  image: string;
-  discount: number;
-  tag?: string;
-}
-
-const products: Product[] = [
-  { id: 1, name: "Dolo 650mg Tablet", brand: "Micro Labs", price: 28, originalPrice: 35, rating: 4.5, reviews: 2340, image: "💊", discount: 20, tag: "Bestseller" },
-  { id: 2, name: "Vitamin D3 Supplement", brand: "HealthKart", price: 420, originalPrice: 599, rating: 4.3, reviews: 1820, image: "🧴", discount: 30 },
-  { id: 3, name: "Digital Thermometer", brand: "Dr. Morepen", price: 149, originalPrice: 250, rating: 4.6, reviews: 3100, image: "🌡️", discount: 40, tag: "Hot Deal" },
-  { id: 4, name: "N95 Face Mask (Pack of 5)", brand: "MedPlus", price: 199, originalPrice: 350, rating: 4.4, reviews: 980, image: "😷", discount: 43 },
-  { id: 5, name: "Hand Sanitizer 500ml", brand: "Lifebuoy", price: 135, originalPrice: 175, rating: 4.2, reviews: 1560, image: "🧴", discount: 23 },
-  { id: 6, name: "Blood Pressure Monitor", brand: "Omron", price: 1299, originalPrice: 1899, rating: 4.7, reviews: 4200, image: "💉", discount: 32, tag: "Top Rated" },
-  { id: 7, name: "Multivitamin Tablets", brand: "Centrum", price: 680, originalPrice: 850, rating: 4.4, reviews: 2100, image: "💊", discount: 20 },
-  { id: 8, name: "Protein Powder 1kg", brand: "MuscleBlaze", price: 1499, originalPrice: 2199, rating: 4.5, reviews: 3400, image: "🥤", discount: 32 },
-];
+const products = allProducts.slice(0, 8);
 
 interface ProductSectionProps {
   onAddToCart: () => void;
