@@ -7,6 +7,7 @@ type AuthUser = {
   name: string;
   email: string;
   role: string;
+  phone?: string;
 };
 
 type AuthContextValue = {
@@ -27,32 +28,30 @@ type AuthProviderProps = {
 };
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [token, setToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem(storageKeyToken);
-    const storedUser = localStorage.getItem(storageKeyUser);
-
-    if (storedToken && storedUser) {
+  const [user, setUser] = useState<AuthUser | null>(() => {
+    const storedUser = sessionStorage.getItem(storageKeyUser);
+    if (storedUser) {
       try {
-        const parsedUser = JSON.parse(storedUser) as AuthUser;
-        setUser(parsedUser);
-        setToken(storedToken);
+        return JSON.parse(storedUser) as AuthUser;
       } catch {
-        localStorage.removeItem(storageKeyToken);
-        localStorage.removeItem(storageKeyUser);
+        sessionStorage.removeItem(storageKeyUser);
+        return null;
       }
     }
-  }, []);
+    return null;
+  });
+
+  const [token, setToken] = useState<string | null>(() => {
+    return sessionStorage.getItem(storageKeyToken);
+  });
 
   useEffect(() => {
     if (token && user) {
-      localStorage.setItem(storageKeyToken, token);
-      localStorage.setItem(storageKeyUser, JSON.stringify(user));
+      sessionStorage.setItem(storageKeyToken, token);
+      sessionStorage.setItem(storageKeyUser, JSON.stringify(user));
     } else {
-      localStorage.removeItem(storageKeyToken);
-      localStorage.removeItem(storageKeyUser);
+      sessionStorage.removeItem(storageKeyToken);
+      sessionStorage.removeItem(storageKeyUser);
     }
   }, [token, user]);
 
@@ -137,11 +136,21 @@ export const authApi = {
       body: JSON.stringify({ email, password }),
     });
   },
-  register: async (name: string, email: string, password: string) => {
+  register: async (name: string, email: string, password: string, phone?: string) => {
     return authFetch(`${apiBaseUrl}/api/auth/register`, {
       method: "POST",
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify({ name, email, password, phone }),
     });
+  },
+  updateProfile: async (name: string, email: string, phone: string, token: string) => {
+    return authFetch(
+      `${apiBaseUrl}/api/auth/profile`,
+      {
+        method: "PUT",
+        body: JSON.stringify({ name, email, phone }),
+      },
+      token,
+    );
   },
   createOrder: async (
     payload: {

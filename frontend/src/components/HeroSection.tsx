@@ -76,18 +76,20 @@ const HeroSection = () => {
               </motion.div>
             </div>
 
-            {/* Trust badges */}
-            <div className="mt-10 flex flex-wrap gap-6 justify-center lg:justify-start">
+            {/* Trust badges - Services Modal List Style */}
+            <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-lg">
               {trustBadges.map((badge, i) => (
                 <motion.div
                   key={badge.label}
-                  className="flex items-center gap-2 text-sm text-muted-foreground"
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl bg-card/40 backdrop-blur-sm border border-border/50 text-xs sm:text-sm text-foreground font-semibold hover:bg-primary/5 hover:border-primary/20 transition-all duration-300"
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 + i * 0.1 }}
+                  whileHover={{ scale: 1.02 }}
                 >
-                  <badge.icon className="w-5 h-5 text-trust" />
-                  <span className="font-medium">{badge.label}</span>
+                  <span className="w-1.5 h-1.5 bg-teal-400 rounded-full animate-pulse shrink-0" />
+                  <badge.icon className="w-4 h-4 text-teal-400 shrink-0" />
+                  <span className="font-medium text-foreground">{badge.label}</span>
                 </motion.div>
               ))}
             </div>

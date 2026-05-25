@@ -96,16 +96,16 @@ const HealthBlogPage = () => {
               transition={{ delay: index * 0.06 }}
               whileHover={{ y: -4 }}
             >
-              <Link to={`/health-blog/${article._id}`} className="block cursor-pointer">
-                <div className="h-44 bg-muted/30 flex items-center justify-center text-6xl group-hover:bg-accent/30 transition-colors overflow-hidden">
+              <Link to={`/projects/${article._id}`} className="block cursor-pointer">
+                <div className="h-56 bg-white flex items-center justify-center group-hover:bg-accent/5 transition-colors overflow-hidden border-b border-border/10 p-4">
                   {article.image ? (
                     <img
                       src={article.image}
                       alt={article.title}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                     />
                   ) : (
-                    <span>{article.emoji || "🩺"}</span>
+                    <span className="text-6xl">{article.emoji || "🩺"}</span>
                   )}
                 </div>
                 <div className="p-5">
@@ -152,9 +152,9 @@ const HealthBlogPage = () => {
       <div className="pt-32 md:pt-40 pb-16">
         <div className="container mx-auto px-4">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-foreground">Health Blog</h1>
+            <h1 className="text-4xl font-bold text-foreground">Projects</h1>
             <p className="text-muted-foreground mt-2">
-              Explore health tips, product education, and pharmacy updates.
+              Explore our custom healthcare projects and pharmacy solutions.
             </p>
           </motion.div>
 

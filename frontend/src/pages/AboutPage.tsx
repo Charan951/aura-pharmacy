@@ -88,11 +88,11 @@ const AboutPage = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.15 }}
             >
-              <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-primary/10 via-primary/5 to-primary/20 border border-primary/15 h-64 md:h-80 flex items-center justify-center">
+              <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-primary/10 via-primary/5 to-primary/20 border border-primary/15 h-80 md:h-[400px] flex items-center justify-center">
                 <img
                   src={aboutImageOne || "https://via.placeholder.com/640x360.png?text=Pharmacy+Team"}
                   alt="Pharmacy team"
-                  className="absolute inset-4 rounded-2xl object-cover w-[calc(100%-2rem)] h-[calc(100%-2rem)]"
+                  className="absolute inset-4 rounded-2xl object-contain w-[calc(100%-2rem)] h-[calc(100%-2rem)] bg-white p-4 shadow-sm"
                 />
               </div>
             </motion.div>
@@ -105,14 +105,14 @@ const AboutPage = () => {
               transition={{ delay: 0.2 }}
               className="order-2 md:order-1"
             >
-              <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-emerald-500/20 border border-emerald-500/15 h-64 md:h-80 flex items-center justify-center">
+              <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-emerald-500/20 border border-emerald-500/15 h-80 md:h-[400px] flex items-center justify-center">
                 <img
                   src={
                     aboutImageTwo ||
                     "https://via.placeholder.com/640x360.png?text=Digital+Pharmacy+Experience"
                   }
                   alt="Digital pharmacy experience"
-                  className="absolute inset-4 rounded-2xl object-cover w-[calc(100%-2rem)] h-[calc(100%-2rem)]"
+                  className="absolute inset-4 rounded-2xl object-contain w-[calc(100%-2rem)] h-[calc(100%-2rem)] bg-white p-4 shadow-sm"
                 />
               </div>
             </motion.div>

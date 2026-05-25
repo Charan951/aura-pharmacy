@@ -27,7 +27,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-foreground text-background/80 pt-16 pb-8">
+    <footer className="bg-card border-t border-border text-muted-foreground pt-16 pb-8">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
@@ -40,15 +40,15 @@ const Footer = () => {
               <div className="w-9 h-9 rounded-xl gradient-primary flex items-center justify-center">
                 <span className="text-primary-foreground font-bold text-lg">+</span>
               </div>
-              <span className="text-xl font-bold text-background">MediCare</span>
+              <span className="text-xl font-bold text-foreground">MediCare</span>
             </div>
-            <p className="text-sm leading-relaxed text-background/60">
+            <p className="text-sm leading-relaxed text-muted-foreground/80">
               India's most trusted online pharmacy. We deliver genuine medicines with care.
             </p>
-            <div className="space-y-2 mt-4 text-sm text-background/60">
-              <div className="flex items-center gap-2"><Phone className="w-4 h-4" /> 9929299201</div>
-              <div className="flex items-center gap-2"><Mail className="w-4 h-4" /> charan@gmail.com</div>
-              <div className="flex items-center gap-2"><MapPin className="w-4 h-4" /> Hyderabad, India</div>
+            <div className="space-y-2 mt-4 text-sm text-muted-foreground/80">
+              <div className="flex items-center gap-2"><Phone className="w-4 h-4 text-primary" /> 9929299201</div>
+              <div className="flex items-center gap-2"><Mail className="w-4 h-4 text-primary" /> charan@gmail.com</div>
+              <div className="flex items-center gap-2"><MapPin className="w-4 h-4 text-primary" /> Hyderabad, India</div>
             </div>
           </motion.div>
 
@@ -61,18 +61,18 @@ const Footer = () => {
               viewport={{ once: true }}
               transition={{ delay: (i + 1) * 0.1 }}
             >
-              <h4 className="font-semibold text-background mb-4">{title}</h4>
+              <h4 className="font-semibold text-foreground mb-4">{title}</h4>
               <ul className="space-y-2">
                 {items.map((item) => {
                   const path = paths[item] ?? "#";
                   return (
                     <li key={item}>
                       {path === "#" ? (
-                        <span className="text-sm text-background/50">{item}</span>
+                        <span className="text-sm text-muted-foreground/80">{item}</span>
                       ) : (
                         <Link
                           to={path}
-                          className="text-sm text-background/50 hover:text-background transition-colors"
+                          className="text-sm text-muted-foreground hover:text-primary transition-colors"
                         >
                           {item}
                         </Link>
@@ -85,7 +85,7 @@ const Footer = () => {
           ))}
         </div>
 
-        <div className="border-t border-background/10 mt-12 pt-6 text-center text-xs text-background/40">
+        <div className="border-t border-border mt-12 pt-6 text-center text-xs text-muted-foreground/40">
           © 2026 MediCare Pharmacy. All rights reserved.
         </div>
       </div>

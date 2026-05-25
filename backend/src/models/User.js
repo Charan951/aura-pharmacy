@@ -20,10 +20,21 @@ const userSchema = new mongoose.Schema(
       required: true,
       minlength: 6,
     },
+    phone: {
+      type: String,
+      required: false,
+      trim: true,
+    },
     role: {
       type: String,
       enum: ["user", "admin", "staff"],
       default: "user",
+    },
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordExpires: {
+      type: Date,
     },
   },
   {

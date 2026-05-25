@@ -1,8 +1,10 @@
-import { LayoutDashboard, Boxes, ShoppingBag, FileText, Package, Users, BarChart3, Settings, Tag, BookOpen } from "lucide-react";
+import { LayoutDashboard, Boxes, ShoppingBag, FileText, Package, Users, BarChart3, Settings, Tag, BookOpen, LogOut } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/use-auth";
+import { toast } from "sonner";
 
 const navItems = [
   { label: "Dashboard", to: "/admin", icon: LayoutDashboard, exact: true },
@@ -18,6 +20,8 @@ const navItems = [
 ];
 
 const AdminLayout = () => {
+  const { clearSession } = useAuth();
+
   return (
     <div className="min-h-screen bg-muted/30 flex">
       <aside className="hidden md:flex w-64 flex-col border-r bg-card/80 backdrop-blur">
@@ -48,6 +52,19 @@ const AdminLayout = () => {
             </NavLink>
           ))}
         </nav>
+        <div className="p-4 border-t mt-auto">
+          <Button
+            variant="ghost"
+            className="w-full justify-start gap-2 px-3 py-2 rounded-xl text-sm font-medium text-destructive hover:text-destructive hover:bg-destructive/10 transition-colors"
+            onClick={() => {
+              clearSession();
+              toast.success("Logged out successfully");
+            }}
+          >
+            <LogOut className="w-4 h-4" />
+            <span>Logout</span>
+          </Button>
+        </div>
       </aside>
       <main className="flex-1 flex flex-col">
         <header className="flex items-center justify-between gap-4 px-4 md:px-8 py-3 border-b bg-background/60 backdrop-blur sticky top-0 z-10">
@@ -63,6 +80,18 @@ const AdminLayout = () => {
             </div>
             <Button variant="outline" size="sm" className="rounded-full">
               Today
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="rounded-full text-destructive hover:text-destructive hover:bg-destructive/10 gap-1.5"
+              onClick={() => {
+                clearSession();
+                toast.success("Logged out successfully");
+              }}
+            >
+              <LogOut className="w-4 h-4" />
+              <span className="hidden sm:inline">Logout</span>
             </Button>
           </div>
         </header>

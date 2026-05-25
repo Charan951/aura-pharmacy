@@ -29,28 +29,28 @@ type CartProviderProps = {
 };
 
 export const CartProvider = ({ children }: CartProviderProps) => {
-  const [items, setItems] = useState<CartItem[]>([]);
-
-  useEffect(() => {
-    const stored = localStorage.getItem(storageKeyCart);
-    if (!stored) return;
-
-    try {
-      const parsed = JSON.parse(stored) as CartItem[];
-      if (Array.isArray(parsed)) {
-        setItems(parsed);
+  const [items, setItems] = useState<CartItem[]>(() => {
+    const stored = sessionStorage.getItem(storageKeyCart);
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored) as CartItem[];
+        if (Array.isArray(parsed)) {
+          return parsed;
+        }
+      } catch {
+        sessionStorage.removeItem(storageKeyCart);
+        return [];
       }
-    } catch {
-      localStorage.removeItem(storageKeyCart);
     }
-  }, []);
+    return [];
+  });
 
   useEffect(() => {
     if (items.length === 0) {
-      localStorage.removeItem(storageKeyCart);
+      sessionStorage.removeItem(storageKeyCart);
       return;
     }
-    localStorage.setItem(storageKeyCart, JSON.stringify(items));
+    sessionStorage.setItem(storageKeyCart, JSON.stringify(items));
   }, [items]);
 
   const upsertItem = (next: CartItem[]) => {

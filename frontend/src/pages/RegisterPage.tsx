@@ -9,13 +9,16 @@ import CartDrawer from "@/components/CartDrawer";
 import { toast } from "sonner";
 import { authApi, useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
+import { Eye, EyeOff } from "lucide-react";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
   const { setSession } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const { totalItems } = useCart();
@@ -28,7 +31,7 @@ const RegisterPage = () => {
     setSubmitting(true);
 
     try {
-      const data = await authApi.register(name, email, password);
+      const data = await authApi.register(name, email, password, phone);
 
       setSession(data.user, data.token);
 
@@ -63,14 +66,28 @@ const RegisterPage = () => {
                 <Input type="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
               </div>
               <div className="space-y-2">
+                <label className="text-sm font-medium">Mobile number</label>
+                <Input type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} required />
+              </div>
+              <div className="space-y-2">
                 <label className="text-sm font-medium">Password</label>
-                <Input
-                  type="password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  minLength={6}
-                  required
-                />
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    minLength={6}
+                    required
+                    className="pr-10"
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-muted-foreground hover:text-foreground"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
               <Button type="submit" className="w-full h-11" disabled={submitting}>
                 {submitting ? "Creating account..." : "Create account"}
@@ -82,6 +99,19 @@ const RegisterPage = () => {
                 Login
               </Link>
             </p>
+            <div className="border-t border-border/60 pt-4 text-center">
+              <p className="text-[11px] text-muted-foreground">
+                By creating an account, you agree to our{" "}
+                <Link to="/terms-of-service" className="underline hover:text-foreground transition-colors">
+                  Terms of Service
+                </Link>{" "}
+                and{" "}
+                <Link to="/privacy-policy" className="underline hover:text-foreground transition-colors">
+                  Privacy Policy
+                </Link>
+                .
+              </p>
+            </div>
           </Card>
         </div>
       </main>

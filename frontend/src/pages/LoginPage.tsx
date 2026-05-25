@@ -9,6 +9,7 @@ import CartDrawer from "@/components/CartDrawer";
 import { toast } from "sonner";
 import { authApi, useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
+import { Eye, EyeOff } from "lucide-react";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const LoginPage = () => {
   const { setSession } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const { totalItems } = useCart();
@@ -36,7 +38,9 @@ const LoginPage = () => {
 
       const state = location.state as { from?: { pathname?: string } } | null;
       const fromPath = state?.from?.pathname;
-      const targetPath = fromPath || (data.user?.role === "admin" ? "/admin" : "/");
+      const targetPath = (data.user?.role === "admin" || data.user?.role === "staff")
+        ? "/admin"
+        : (fromPath || "/");
 
       navigate(targetPath, { replace: true });
     } catch (error) {
@@ -64,12 +68,27 @@ const LoginPage = () => {
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Password</label>
-                <Input
-                  type="password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  required
-                />
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    required
+                    className="pr-10"
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-muted-foreground hover:text-foreground"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                <div className="flex justify-end mt-1">
+                  <Link to="/forgot-password" className="text-xs text-primary hover:underline font-medium">
+                    Forgot Password?
+                  </Link>
+                </div>
               </div>
               <Button type="submit" className="w-full h-11" disabled={submitting}>
                 {submitting ? "Logging in..." : "Login"}
@@ -81,6 +100,19 @@ const LoginPage = () => {
                 Create an account
               </Link>
             </p>
+            <div className="border-t border-border/60 pt-4 text-center">
+              <p className="text-[11px] text-muted-foreground">
+                By logging in, you agree to our{" "}
+                <Link to="/terms-of-service" className="underline hover:text-foreground transition-colors">
+                  Terms of Service
+                </Link>{" "}
+                and{" "}
+                <Link to="/privacy-policy" className="underline hover:text-foreground transition-colors">
+                  Privacy Policy
+                </Link>
+                .
+              </p>
+            </div>
           </Card>
         </div>
       </main>

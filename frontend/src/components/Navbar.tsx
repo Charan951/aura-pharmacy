@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, ShoppingCart, User, Menu, X } from "lucide-react";
+import { Search, ShoppingCart, User, Menu, X, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTheme } from "next-themes";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,6 +34,12 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
   const { isAuthenticated, user, clearSession } = useAuth();
   const { totalItems } = useCart();
   const queryClient = useQueryClient();
+  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -69,7 +76,7 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
       });
     }
 
-    if (to === "/health-blog") {
+    if (to === "/projects") {
       queryClient.prefetchQuery({
         queryKey: ["articles"],
         queryFn: async () => {
@@ -82,10 +89,11 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
 
   const navLinks = [
     { label: "Home", to: "/" },
+    { label: "About Us", to: "/about" },
     { label: "Categories", to: "/categories" },
+    { label: "Projects", to: "/projects" },
     { label: "Offers", to: "/offers" },
-    { label: "Health Blog", to: "/health-blog" },
-    { label: "About", to: "/about" },
+    { label: "Contact Us", to: "/contact" },
   ];
 
   const isActiveLink = (to: string) => {
@@ -101,8 +109,8 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
       );
     }
 
-    if (to === "/health-blog") {
-      return location.pathname.startsWith("/health-blog");
+    if (to === "/projects") {
+      return location.pathname.startsWith("/projects");
     }
 
     return location.pathname === to;
@@ -207,6 +215,20 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
             )}
 
             <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-xl transition-all duration-300"
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                aria-label="Toggle theme"
+              >
+                {mounted && theme === "dark" ? (
+                  <Sun className="w-5 h-5 text-amber-400" />
+                ) : (
+                  <Moon className="w-5 h-5 text-foreground" />
+                )}
+              </Button>
+
               {isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -224,20 +246,40 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={() => {
-                      navigate("/orders");
-                    }}
-                  >
-                    My Orders
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      navigate("/profile");
-                    }}
-                  >
-                    Profile
-                  </DropdownMenuItem>
+                  {user?.role === "admin" || user?.role === "staff" ? (
+                    <DropdownMenuItem
+                      onClick={() => {
+                        navigate("/admin");
+                      }}
+                      className="font-semibold text-primary hover:text-primary-foreground focus:text-primary-foreground focus:bg-primary/90"
+                    >
+                      Admin Dashboard
+                    </DropdownMenuItem>
+                  ) : (
+                    <>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          navigate("/orders");
+                        }}
+                      >
+                        My Orders
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          navigate("/prescriptions");
+                        }}
+                      >
+                        Prescriptions
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          navigate("/profile");
+                        }}
+                      >
+                        Profile
+                      </DropdownMenuItem>
+                    </>
+                  )}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     onClick={() => {
@@ -341,6 +383,85 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
                   </Link>
                 </motion.div>
               ))}
+
+              {isAuthenticated && (
+                <>
+                  <div className="h-px bg-border/50 my-2" />
+                  {user?.role === "admin" || user?.role === "staff" ? (
+                    <motion.div
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: navLinks.length * 0.05 }}
+                    >
+                      <Link
+                        to="/admin"
+                        className="block py-2 text-sm font-semibold text-primary hover:text-primary-foreground"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Admin Dashboard
+                      </Link>
+                    </motion.div>
+                  ) : (
+                    <>
+                      <motion.div
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: (navLinks.length + 1) * 0.05 }}
+                      >
+                        <Link
+                          to="/orders"
+                          className="block py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          My Orders
+                        </Link>
+                      </motion.div>
+                      <motion.div
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: (navLinks.length + 2) * 0.05 }}
+                      >
+                        <Link
+                          to="/prescriptions"
+                          className="block py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          Prescriptions
+                        </Link>
+                      </motion.div>
+                      <motion.div
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: (navLinks.length + 3) * 0.05 }}
+                      >
+                        <Link
+                          to="/profile"
+                          className="block py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          Profile
+                        </Link>
+                      </motion.div>
+                    </>
+                  )}
+                  <motion.div
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: (navLinks.length + 4) * 0.05 }}
+                  >
+                    <button
+                      onClick={() => {
+                        clearSession();
+                        setMobileMenuOpen(false);
+                        toast.success("Logged out");
+                      }}
+                      className="block w-full text-left py-2 text-sm font-medium text-rose-400 hover:text-rose-300"
+                    >
+                      Logout
+                    </button>
+                  </motion.div>
+                </>
+              )}
             </div>
           </motion.div>
         )}

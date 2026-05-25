@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation, useParams } from "react-router-dom";
 import Index from "./pages/Index";
 import CategoryPage from "./pages/CategoryPage";
 import CategoriesPage from "./pages/CategoriesPage";
@@ -22,6 +22,7 @@ import FeedbackPage from "./pages/FeedbackPage";
 import NotFound from "./pages/NotFound";
 import { AuthProvider, useAuth } from "./hooks/use-auth";
 import { CartProvider } from "./hooks/use-cart";
+import { ThemeProvider } from "next-themes";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import AdminLayout from "./pages/admin/AdminLayout";
@@ -59,88 +60,97 @@ const ScrollToTop = () => {
   return null;
 };
 
+const RedirectToProjectDetail = () => {
+  const { id } = useParams<{ id: string }>();
+  return <Navigate to={`/projects/${id}`} replace />;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <AuthProvider>
-        <CartProvider>
-          <BrowserRouter>
-            <ScrollToTop />
-            <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/categories" element={<CategoriesPage />} />
-            <Route path="/category/:category" element={<CategoryPage />} />
-            <Route path="/search" element={<CategoryPage />} />
-            <Route path="/offers" element={<OffersPage />} />
-            <Route path="/health-blog" element={<HealthBlogPage />} />
-            <Route path="/health-blog/:id" element={<ArticleDetailPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/track-order" element={<TrackOrderPage />} />
-            <Route path="/return-policy" element={<ReturnPolicyPage />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-            <Route path="/terms-of-service" element={<TermsOfServicePage />} />
-            <Route path="/disclaimer" element={<DisclaimerPage />} />
-            <Route path="/faqs" element={<FaqsPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/feedback" element={<FeedbackPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route
-              path="/prescriptions"
-              element={
-                <RequireAuth>
-                  <PrescriptionUploadPage />
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="/orders"
-              element={
-                <RequireAuth>
-                  <MyOrdersPage />
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                <RequireAuth>
-                  <ProfilePage />
-                </RequireAuth>
-              }
-            />
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <AuthProvider>
+          <CartProvider>
+            <BrowserRouter>
+              <ScrollToTop />
+              <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/categories" element={<CategoriesPage />} />
+              <Route path="/category/:category" element={<CategoryPage />} />
+              <Route path="/search" element={<CategoryPage />} />
+              <Route path="/offers" element={<OffersPage />} />
+              <Route path="/projects" element={<HealthBlogPage />} />
+              <Route path="/projects/:id" element={<ArticleDetailPage />} />
+              <Route path="/health-blog" element={<Navigate to="/projects" replace />} />
+              <Route path="/health-blog/:id" element={<RedirectToProjectDetail />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/track-order" element={<TrackOrderPage />} />
+              <Route path="/return-policy" element={<ReturnPolicyPage />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+              <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+              <Route path="/disclaimer" element={<DisclaimerPage />} />
+              <Route path="/faqs" element={<FaqsPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/feedback" element={<FeedbackPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route
+                path="/prescriptions"
+                element={
+                  <RequireAuth>
+                    <PrescriptionUploadPage />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/orders"
+                element={
+                  <RequireAuth>
+                    <MyOrdersPage />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <RequireAuth>
+                    <ProfilePage />
+                  </RequireAuth>
+                }
+              />
 
-            <Route element={<RequireAdmin />}>
-              <Route path="/admin" element={<AdminLayout />}>
-                <Route index element={<AdminDashboardPage />} />
-                <Route path="categories" element={<AdminCategoriesPage />} />
-                <Route path="orders" element={<AdminOrdersPage />} />
-                <Route path="prescriptions" element={<AdminPrescriptionsPage />} />
-                <Route path="inventory" element={<AdminInventoryPage />} />
-                <Route path="staff" element={<AdminStaffPage />} />
-                <Route path="offers" element={<AdminOffersPage />} />
-                <Route path="articles" element={<AdminArticlesPage />} />
-                <Route
-                  path="reports"
-                  element={
-                    <AdminPlaceholderPage
-                      title="Reports"
-                      description="View sales, revenue, and performance reports over different periods."
-                    />
-                  }
-                />
-                <Route path="settings" element={<AdminSettingsPage />} />
+              <Route element={<RequireAdmin />}>
+                <Route path="/admin" element={<AdminLayout />}>
+                  <Route index element={<AdminDashboardPage />} />
+                  <Route path="categories" element={<AdminCategoriesPage />} />
+                  <Route path="orders" element={<AdminOrdersPage />} />
+                  <Route path="prescriptions" element={<AdminPrescriptionsPage />} />
+                  <Route path="inventory" element={<AdminInventoryPage />} />
+                  <Route path="staff" element={<AdminStaffPage />} />
+                  <Route path="offers" element={<AdminOffersPage />} />
+                  <Route path="articles" element={<AdminArticlesPage />} />
+                  <Route
+                    path="reports"
+                    element={
+                      <AdminPlaceholderPage
+                        title="Reports"
+                        description="View sales, revenue, and performance reports over different periods."
+                      />
+                    }
+                  />
+                  <Route path="settings" element={<AdminSettingsPage />} />
+                </Route>
               </Route>
-            </Route>
 
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-        </CartProvider>
-      </AuthProvider>
-    </TooltipProvider>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+          </CartProvider>
+        </AuthProvider>
+      </TooltipProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 
