@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, ArrowUp } from "lucide-react";
+import { MessageCircle, ArrowUp, FileText } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const FloatingButtons = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => setShowScrollTop(window.scrollY > 400);
@@ -28,12 +30,26 @@ const FloatingButtons = () => {
         <MessageCircle className="w-6 h-6" />
       </motion.a>
 
+      {/* Prescription Upload FAB */}
+      <motion.button
+        onClick={() => navigate("/prescriptions")}
+        className="fixed bottom-24 right-6 z-40 w-14 h-14 rounded-full gradient-primary text-primary-foreground flex items-center justify-center shadow-lg cursor-pointer"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ delay: 1.1 }}
+        title="Upload Doctor Prescription"
+      >
+        <FileText className="w-6 h-6" />
+      </motion.button>
+
       {/* Scroll to top */}
       <AnimatePresence>
         {showScrollTop && (
           <motion.button
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="fixed bottom-24 right-[30px] z-40 w-11 h-11 rounded-full gradient-primary text-primary-foreground flex items-center justify-center shadow-lg"
+            className="fixed bottom-40 right-[30px] z-40 w-11 h-11 rounded-full gradient-primary text-primary-foreground flex items-center justify-center shadow-lg"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}

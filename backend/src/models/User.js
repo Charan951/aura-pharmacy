@@ -36,6 +36,24 @@ const userSchema = new mongoose.Schema(
     resetPasswordExpires: {
       type: Date,
     },
+    addresses: [
+      {
+        type: {
+          type: String,
+          enum: ["home", "work", "other"],
+          default: "home",
+        },
+        line1: { type: String, required: true },
+        city: { type: String, required: true },
+        state: { type: String, required: true },
+        postalCode: { type: String, required: true },
+        coordinates: {
+          lat: Number,
+          lng: Number,
+        },
+        isDefault: { type: Boolean, default: false },
+      }
+    ],
   },
   {
     timestamps: true,

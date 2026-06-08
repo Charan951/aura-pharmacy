@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, ShoppingCart, User, Menu, X, Sun, Moon } from "lucide-react";
+import { Search, ShoppingCart, User, Menu, X, Sun, Moon, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import {
@@ -301,6 +301,57 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
                   <User className="w-5 h-5" />
                 </Button>
               )}
+              
+              {/* Notification Bell */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="relative rounded-xl transition-all duration-300">
+                    <Bell className="w-5 h-5" />
+                    <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-destructive" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-80 p-2">
+                  <DropdownMenuLabel className="font-semibold text-sm flex items-center justify-between">
+                    <span>Notifications</span>
+                    <button className="text-[10px] text-primary hover:underline font-medium">Mark all as read</button>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <div className="max-h-72 overflow-y-auto space-y-1 py-1">
+                    <DropdownMenuItem className="flex flex-col items-start p-2.5 cursor-pointer rounded-lg hover:bg-muted">
+                      <div className="flex items-center gap-2 w-full">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+                        <span className="font-semibold text-xs text-foreground">Prescription Verified</span>
+                        <span className="text-[9px] text-muted-foreground ml-auto">Just now</span>
+                      </div>
+                      <p className="text-[11px] text-muted-foreground mt-1 leading-normal">
+                        Your uploaded prescription for Amoxicillin has been reviewed and verified by our pharmacist.
+                      </p>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator className="my-1" />
+                    <DropdownMenuItem className="flex flex-col items-start p-2.5 cursor-pointer rounded-lg hover:bg-muted">
+                      <div className="flex items-center gap-2 w-full">
+                        <span className="w-2 h-2 rounded-full bg-blue-500 shrink-0" />
+                        <span className="font-semibold text-xs text-foreground">Order Dispatched</span>
+                        <span className="text-[9px] text-muted-foreground ml-auto">2h ago</span>
+                      </div>
+                      <p className="text-[11px] text-muted-foreground mt-1 leading-normal">
+                        Order #71A9B2 containing Vitamin C has been packed and handed over to delivery partner.
+                      </p>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator className="my-1" />
+                    <DropdownMenuItem className="flex flex-col items-start p-2.5 cursor-pointer rounded-lg hover:bg-muted">
+                      <div className="flex items-center gap-2 w-full">
+                        <span className="w-2 h-2 rounded-full bg-purple-500 shrink-0" />
+                        <span className="font-semibold text-xs text-foreground">Summer Offers Live</span>
+                        <span className="text-[9px] text-muted-foreground ml-auto">1d ago</span>
+                      </div>
+                      <p className="text-[11px] text-muted-foreground mt-1 leading-normal">
+                        Get flat 20% discount on skincare products and summer protection creams.
+                      </p>
+                    </DropdownMenuItem>
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
 
               <motion.div whileTap={{ scale: 0.9 }}>
                 <Button
