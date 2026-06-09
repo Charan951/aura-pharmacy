@@ -36,7 +36,7 @@ const CategoriesPage = () => {
     },
   });
 
-  const products = data ?? [];
+  const products = Array.isArray(data) ? data : [];
 
   const cartCount = totalItems;
 

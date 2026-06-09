@@ -22,7 +22,7 @@ type Product = {
 const FeaturedProducts = () => {
   const { addItem } = useCart();
 
-  const { data, isLoading } = useQuery<Product[]>({
+  const { data, isLoading, isError } = useQuery<Product[]>({
     queryKey: ["featured-products"],
     queryFn: async () => {
       const response = await apiClient.get<Product[]>(`${apiBaseUrl}/api/products`);
@@ -30,7 +30,7 @@ const FeaturedProducts = () => {
     },
   });
 
-  const featured = (data ?? []).slice(0, 4);
+  const featured = Array.isArray(data) ? data.slice(0, 4) : [];
 
   const handleAddToCart = (product: Product) => {
     addItem(
@@ -79,9 +79,13 @@ const FeaturedProducts = () => {
               </div>
             ))}
           </div>
-        ) : featured.length === 0 ? (
+        ) : isError || featured.length === 0 ? (
           <div className="text-center py-12 rounded-3xl border border-dashed border-border/50">
-            <p className="text-muted-foreground text-sm">No featured products available at this moment.</p>
+            <p className="text-muted-foreground text-sm">
+              {isError
+                ? "Failed to load featured products. Please check if the backend is running."
+                : "No featured products available at this moment."}
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

@@ -56,7 +56,7 @@ const CategoryPage = () => {
     keepPreviousData: true,
   });
 
-  const products = data ?? [];
+  const products = Array.isArray(data) ? data : [];
 
   const cartCount = totalItems;
 
