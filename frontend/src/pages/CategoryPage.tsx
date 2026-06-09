@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { ArrowLeft, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -53,7 +53,7 @@ const CategoryPage = () => {
       return response.data;
     },
     enabled: isSearchMode ? searchTerm.length > 0 : decodedCategory.length > 0,
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   });
 
   const products = Array.isArray(data) ? data : [];
