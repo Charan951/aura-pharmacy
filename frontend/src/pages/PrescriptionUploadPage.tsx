@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { apiBaseUrl } from "@/lib/utils";
+import { PRESCRIPTION_ENDPOINTS } from "@/api";
 import { authFetch, useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
@@ -41,7 +41,7 @@ const PrescriptionUploadPage = () => {
     queryKey: ["my-prescriptions"],
     queryFn: () =>
       authFetch(
-        `${apiBaseUrl}/api/prescriptions/my`,
+        PRESCRIPTION_ENDPOINTS.MY,
         {
           method: "GET",
         },
@@ -59,7 +59,7 @@ const PrescriptionUploadPage = () => {
       const base64 = await fileToBase64(file);
 
       return authFetch(
-        `${apiBaseUrl}/api/prescriptions`,
+        PRESCRIPTION_ENDPOINTS.LIST,
         {
           method: "POST",
           body: JSON.stringify({

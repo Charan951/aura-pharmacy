@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,8 @@ import FloatingButtons from "@/components/FloatingButtons";
 import CartDrawer from "@/components/CartDrawer";
 import { authFetch, useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
-import { apiBaseUrl, cn } from "@/lib/utils";
+import { ORDER_ENDPOINTS } from "@/api";
+import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Calendar, MapPin, CreditCard, ShoppingBag, ArrowRight } from "lucide-react";
@@ -38,6 +39,7 @@ type Order = {
 };
 
 const MyOrdersPage = () => {
+  const navigate = useNavigate();
   const { token } = useAuth();
   const [cartOpen, setCartOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -50,7 +52,7 @@ const MyOrdersPage = () => {
     queryKey: ["my-orders"],
     queryFn: () =>
       authFetch(
-        `${apiBaseUrl}/api/orders/my`,
+        ORDER_ENDPOINTS.MY,
         {
           method: "GET",
         },
@@ -77,7 +79,7 @@ const MyOrdersPage = () => {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } },
+    show: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 100 } },
   };
 
   return (

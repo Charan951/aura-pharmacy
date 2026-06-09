@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { apiBaseUrl } from "@/lib/utils";
-import { apiClient } from "@/api";
+import { apiClient, AUTH_ENDPOINTS, ORDER_ENDPOINTS } from "@/api";
 
 type AuthUser = {
   id: string;
@@ -131,20 +130,20 @@ export const authFetch = async (input: string, init: RequestInit = {}, token?: s
 
 export const authApi = {
   login: async (email: string, password: string) => {
-    return authFetch(`${apiBaseUrl}/api/auth/login`, {
+    return authFetch(AUTH_ENDPOINTS.LOGIN, {
       method: "POST",
       body: JSON.stringify({ email, password }),
     });
   },
   register: async (name: string, email: string, password: string, phone?: string) => {
-    return authFetch(`${apiBaseUrl}/api/auth/register`, {
+    return authFetch(AUTH_ENDPOINTS.REGISTER, {
       method: "POST",
       body: JSON.stringify({ name, email, password, phone }),
     });
   },
   updateProfile: async (name: string, email: string, phone: string, token: string) => {
     return authFetch(
-      `${apiBaseUrl}/api/auth/profile`,
+      AUTH_ENDPOINTS.PROFILE,
       {
         method: "PUT",
         body: JSON.stringify({ name, email, phone }),
@@ -166,7 +165,7 @@ export const authApi = {
     token: string,
   ) => {
     return authFetch(
-      `${apiBaseUrl}/api/orders`,
+      ORDER_ENDPOINTS.LIST,
       {
         method: "POST",
         body: JSON.stringify(payload),

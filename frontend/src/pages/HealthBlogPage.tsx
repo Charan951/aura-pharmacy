@@ -8,8 +8,7 @@ import FloatingButtons from "@/components/FloatingButtons";
 import CartDrawer from "@/components/CartDrawer";
 import { useCart } from "@/hooks/use-cart";
 import { Link } from "react-router-dom";
-import { apiClient } from "@/api";
-import { apiBaseUrl } from "@/lib/utils";
+import { apiClient, ARTICLE_ENDPOINTS } from "@/api";
 
 type Article = {
   _id: string;
@@ -31,7 +30,7 @@ const HealthBlogPage = () => {
   const { data, isLoading, isError } = useQuery<Article[]>({
     queryKey: ["articles"],
     queryFn: async () => {
-      const response = await apiClient.get<Article[]>(`${apiBaseUrl}/api/articles`);
+      const response = await apiClient.get<Article[]>(ARTICLE_ENDPOINTS.LIST);
       return response.data;
     },
   });

@@ -8,8 +8,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import CartDrawer from "@/components/CartDrawer";
-import { apiClient } from "@/api";
-import { apiBaseUrl } from "@/lib/utils";
+import { apiClient, PRODUCT_ENDPOINTS } from "@/api";
 import { toast } from "sonner";
 import { categories as categoryNames } from "@/data/products";
 import { useCart } from "@/hooks/use-cart";
@@ -47,7 +46,7 @@ const CategoryPage = () => {
         params.category = decodedCategory;
       }
 
-      const response = await apiClient.get<Product[]>(`${apiBaseUrl}/api/products`, {
+      const response = await apiClient.get<Product[]>(PRODUCT_ENDPOINTS.LIST, {
         params,
       });
       return response.data;

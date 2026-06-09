@@ -2,8 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { ShoppingCart, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { apiClient } from "@/api";
-import { apiBaseUrl } from "@/lib/utils";
+import { apiClient, PRODUCT_ENDPOINTS } from "@/api";
 import { useCart } from "@/hooks/use-cart";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
@@ -25,7 +24,7 @@ const FeaturedProducts = () => {
   const { data, isLoading, isError } = useQuery<Product[]>({
     queryKey: ["featured-products"],
     queryFn: async () => {
-      const response = await apiClient.get<Product[]>(`${apiBaseUrl}/api/products`);
+      const response = await apiClient.get<Product[]>(PRODUCT_ENDPOINTS.LIST);
       return response.data;
     },
   });

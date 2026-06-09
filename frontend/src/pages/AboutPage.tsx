@@ -5,8 +5,7 @@ import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import CartDrawer from "@/components/CartDrawer";
 import { useCart } from "@/hooks/use-cart";
-import { apiClient } from "@/api";
-import { apiBaseUrl } from "@/lib/utils";
+import { apiClient, SETTINGS_ENDPOINTS } from "@/api";
 
 const AboutPage = () => {
   const [cartOpen, setCartOpen] = useState(false);
@@ -22,7 +21,7 @@ const AboutPage = () => {
         const response = await apiClient.get<{
           aboutSectionOneImage: string;
           aboutSectionTwoImage: string;
-        }>(`${apiBaseUrl}/api/settings/about`);
+        }>(SETTINGS_ENDPOINTS.ABOUT);
 
         setAboutImageOne(response.data.aboutSectionOneImage);
         setAboutImageTwo(response.data.aboutSectionTwoImage);

@@ -7,7 +7,8 @@ import FloatingButtons from "@/components/FloatingButtons";
 import CartDrawer from "@/components/CartDrawer";
 import { useCart } from "@/hooks/use-cart";
 import { useAuth, authFetch } from "@/hooks/use-auth";
-import { apiBaseUrl, cn } from "@/lib/utils";
+import { ORDER_ENDPOINTS } from "@/api";
+import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 
@@ -93,7 +94,7 @@ const TrackOrderPage = () => {
 
     try {
       const orders = (await authFetch(
-        `${apiBaseUrl}/api/orders/my`,
+        ORDER_ENDPOINTS.MY,
         {
           method: "GET",
         },

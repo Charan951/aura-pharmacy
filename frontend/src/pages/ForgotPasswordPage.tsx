@@ -8,8 +8,7 @@ import FloatingButtons from "@/components/FloatingButtons";
 import CartDrawer from "@/components/CartDrawer";
 import { toast } from "sonner";
 import { useCart } from "@/hooks/use-cart";
-import { apiClient } from "@/api";
-import { apiBaseUrl } from "@/lib/utils";
+import { apiClient, AUTH_ENDPOINTS } from "@/api";
 import { Eye, EyeOff, KeyRound, Mail, ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -32,7 +31,7 @@ const ForgotPasswordPage = () => {
     setSubmitting(true);
 
     try {
-      await apiClient.post(`${apiBaseUrl}/api/auth/forgot-password`, { email });
+      await apiClient.post(AUTH_ENDPOINTS.FORGOT_PASSWORD, { email });
       toast.success("Verification code sent to your email!");
       setStep(2);
     } catch (error: any) {
@@ -59,7 +58,7 @@ const ForgotPasswordPage = () => {
     setSubmitting(true);
 
     try {
-      await apiClient.post(`${apiBaseUrl}/api/auth/reset-password`, {
+      await apiClient.post(AUTH_ENDPOINTS.RESET_PASSWORD, {
         email,
         otp: otp.trim(),
         newPassword,

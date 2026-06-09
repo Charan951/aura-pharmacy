@@ -7,8 +7,7 @@ import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import CartDrawer from "@/components/CartDrawer";
 import { useCart } from "@/hooks/use-cart";
-import { apiClient } from "@/api";
-import { apiBaseUrl } from "@/lib/utils";
+import { apiClient, OFFER_ENDPOINTS } from "@/api";
 
 type Offer = {
   _id: string;
@@ -28,7 +27,7 @@ const OffersPage = () => {
   const { data, isLoading, isError } = useQuery<Offer[]>({
     queryKey: ["offers"],
     queryFn: async () => {
-      const response = await apiClient.get<Offer[]>(`${apiBaseUrl}/api/offers`);
+      const response = await apiClient.get<Offer[]>(OFFER_ENDPOINTS.LIST);
       return response.data;
     },
   });

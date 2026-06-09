@@ -8,8 +8,7 @@ import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import CartDrawer from "@/components/CartDrawer";
 import { Button } from "@/components/ui/button";
-import { apiClient } from "@/api";
-import { apiBaseUrl } from "@/lib/utils";
+import { apiClient, PRODUCT_ENDPOINTS } from "@/api";
 import { toast } from "sonner";
 import { useCart } from "@/hooks/use-cart";
 
@@ -31,7 +30,7 @@ const CategoriesPage = () => {
   const { data, isLoading, isError } = useQuery<Product[]>({
     queryKey: ["all-products"],
     queryFn: async () => {
-      const response = await apiClient.get<Product[]>(`${apiBaseUrl}/api/products`);
+      const response = await apiClient.get<Product[]>(PRODUCT_ENDPOINTS.LIST);
       return response.data;
     },
   });

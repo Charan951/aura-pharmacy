@@ -7,8 +7,7 @@ import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import CartDrawer from "@/components/CartDrawer";
 import { useCart } from "@/hooks/use-cart";
-import { apiClient } from "@/api";
-import { apiBaseUrl } from "@/lib/utils";
+import { apiClient, ARTICLE_ENDPOINTS } from "@/api";
 
 type Article = {
   _id: string;
@@ -35,7 +34,7 @@ const ArticleDetailPage = () => {
     enabled: Boolean(id),
     queryFn: async () => {
       if (!id) return null;
-      const response = await apiClient.get<Article>(`${apiBaseUrl}/api/articles/${id}`);
+      const response = await apiClient.get<Article>(ARTICLE_ENDPOINTS.DETAIL(id));
       return response.data;
     },
   });

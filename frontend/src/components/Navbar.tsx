@@ -16,8 +16,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
-import { apiClient } from "@/api";
-import { apiBaseUrl } from "@/lib/utils";
+import { apiClient, PRODUCT_ENDPOINTS, OFFER_ENDPOINTS, ARTICLE_ENDPOINTS } from "@/api";
 
 interface NavbarProps {
   cartCount: number;
@@ -60,7 +59,7 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
       queryClient.prefetchQuery({
         queryKey: ["all-products"],
         queryFn: async () => {
-          const response = await apiClient.get(`${apiBaseUrl}/api/products`);
+          const response = await apiClient.get(PRODUCT_ENDPOINTS.LIST);
           return response.data;
         },
       });
@@ -70,7 +69,7 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
       queryClient.prefetchQuery({
         queryKey: ["offers"],
         queryFn: async () => {
-          const response = await apiClient.get(`${apiBaseUrl}/api/offers`);
+          const response = await apiClient.get(OFFER_ENDPOINTS.LIST);
           return response.data;
         },
       });
@@ -80,7 +79,7 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
       queryClient.prefetchQuery({
         queryKey: ["articles"],
         queryFn: async () => {
-          const response = await apiClient.get(`${apiBaseUrl}/api/articles`);
+          const response = await apiClient.get(ARTICLE_ENDPOINTS.LIST);
           return response.data;
         },
       });
